@@ -3,6 +3,11 @@ from flask_cors import CORS
 from nba_api.stats.endpoints import playercareerstats
 from nba_api.stats.static import players
 
+from nba_api.library.http import NBAStatsHTTP
+
+NBAStatsHTTP().timeout = 60  # Set a higher timeout (e.g., 60 seconds)
+
+
 app = Flask(__name__)
 CORS(app)  # Allows your React app to access the backend
 
