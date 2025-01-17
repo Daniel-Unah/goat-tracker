@@ -14,7 +14,7 @@ def home():
 # route to lebron's stats
 @app.route('/api/lebron-stats', methods=['GET'])
 def get_lebron_stats():
-    '''
+    
     lebron = [player for player in players.get_players() if player['full_name'] == 'LeBron James'][0]
     player_id = lebron['id']
 
@@ -22,8 +22,8 @@ def get_lebron_stats():
     stats_df = career_stats.get_data_frames()[0]
 
     return jsonify(stats_df.to_dict(orient='records'))
-    '''
-    return jsonify({"message": "This endpoint is working!"})
+    
+    #return jsonify({"message": "This endpoint is working!"})
 
 
 if __name__ == '__main__':
