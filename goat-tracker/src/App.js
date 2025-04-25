@@ -1,10 +1,12 @@
 import React from "react";
-import LeBronStats from "./LebronStats.js";
+import CareerStats from "./CareerStats.js";
+import "./App.css";
+import "./CareerStats.css";
 
 const App = () => {
   return (
     <div>
-      <LeBronStats />
+      <CareerStats />
     </div>
   );
 };
