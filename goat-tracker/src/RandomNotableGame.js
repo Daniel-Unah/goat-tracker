@@ -5,9 +5,6 @@ function RandomNotableGameStats() {
     const [randomNotableGameStats, setRandomNotableGameStats] = useState([]);
     const [seasonType, setSeasonType] = useState("Regular Season");
 
-    const matchup = randomNotableGameStats.MATCHUP || "";
-    const opponent = matchup.split(" ")[2];
-
     useEffect(() => {
         const PATHWAY = `http://127.0.0.1:5000/api/lebron/random-game?season_type=${seasonType}`;
         const fetchData = async () => {
@@ -23,6 +20,9 @@ function RandomNotableGameStats() {
         fetchData();
     }, [seasonType]); // this makes the data refresh whenever seasonType changes
 
+    const matchup = randomNotableGameStats.MATCHUP || "";
+    const opponent = matchup.split(" ")[2];
+
     return (
         <>
             <select value={seasonType} onChange={(e) => setSeasonType(e.target.value)}>
@@ -31,7 +31,7 @@ function RandomNotableGameStats() {
             </select>
 
             <div className="RandomNotableGameStats">
-                <p>On {randomNotableGameStats.GAME_DATE}, LeBron James scored {randomNotableGameStats.PTS} points, grabbed {randomNotableGameStats.REB} boards, and assisted {randomNotableGameStats.AST} times in {randomNotableGameStats.MIN} minutes in a {randomNotableGameStats.WL} vs {opponent}.</p>
+                <p>On {randomNotableGameStats.GAME_DATE}, LeBron James scored {randomNotableGameStats.PTS} points, grabbed {randomNotableGameStats.REB} boards, and assisted {randomNotableGameStats.AST} times in {randomNotableGameStats.MIN} minutes in a {randomNotableGameStats.WL} vs {opponent} in the {seasonType}.</p>
             </div>
         </>
     )

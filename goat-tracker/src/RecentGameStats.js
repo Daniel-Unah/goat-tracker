@@ -5,9 +5,6 @@ function RecentGameStats() {
     const [recentGameStats, setRecentGameStats] = useState([]);
     const [seasonType, setSeasonType] = useState("Regular Season");
 
-    const matchup = randomNotableGameStats.MATCHUP || "";
-    const opponent = matchup.split(" ")[2];
-
     useEffect(() => {
         const PATHWAY = `http://127.0.0.1:5000/api/lebron/recent-game?season_type=${seasonType}`;
         const fetchData = async () => {
@@ -23,6 +20,9 @@ function RecentGameStats() {
         fetchData();
     }, [seasonType]); // this makes the data refresh whenever seasonType changes
 
+    const matchup = recentGameStats.MATCHUP || "";
+    const opponent = matchup.split(" ")[2];
+
     return (
         <>
             <select value={seasonType} onChange={(e) => setSeasonType(e.target.value)}>
@@ -31,7 +31,7 @@ function RecentGameStats() {
             </select>
 
             <div className="RecentGameStats">
-                <p>In Lebron James' most recent game, he scored {recentGameStats.PTS} points, grabbed {recentGameStats.REB} boards, and assisted {recentGameStats.AST} times in {recentGameStats.MIN} minutes in a {recentGameStats.WL} vs {opponent}.
+                <p>In Lebron James' most recent game, he scored {recentGameStats.PTS} points, grabbed {recentGameStats.REB} boards, and assisted {recentGameStats.AST} times in {recentGameStats.MIN} minutes in a {recentGameStats.WL} vs {opponent} in the {seasonType}.
                 </p>
             </div>
         </>
