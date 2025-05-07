@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import "./RecentGameStats.css";
+import "./RandomNotableGame.css";
 
-function RecentGameStats() {
-    const [recentGameStats, setRecentGameStats] = useState([]);
+function RandomNotableGameStats() {
+    const [randomNotableGameStats, setRandomNotableGameStats] = useState([]);
     const [seasonType, setSeasonType] = useState("Regular Season");
 
     const matchup = randomNotableGameStats.MATCHUP || "";
     const opponent = matchup.split(" ")[2];
 
     useEffect(() => {
-        const PATHWAY = `http://127.0.0.1:5000/api/lebron/recent-game?season_type=${seasonType}`;
+        const PATHWAY = `http://127.0.0.1:5000/api/lebron/random-game?season_type=${seasonType}`;
         const fetchData = async () => {
             try {
                 const response = await fetch(PATHWAY);
                 const data = await response.json();
-                setRecentGameStats(data);
+                setRandomNotableGameStats(data);
                 console.log(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -30,12 +30,11 @@ function RecentGameStats() {
                 <option value="Playoffs">Playoffs</option>
             </select>
 
-            <div className="RecentGameStats">
-                <p>In Lebron James' most recent game, he scored {recentGameStats.PTS} points, grabbed {recentGameStats.REB} boards, and assisted {recentGameStats.AST} times in {recentGameStats.MIN} minutes in a {recentGameStats.WL} vs {opponent}.
-                </p>
+            <div className="RandomNotableGameStats">
+                <p>On {randomNotableGameStats.GAME_DATE}, LeBron James scored {randomNotableGameStats.PTS} points, grabbed {randomNotableGameStats.REB} boards, and assisted {randomNotableGameStats.AST} times in {randomNotableGameStats.MIN} minutes in a {randomNotableGameStats.WL} vs {opponent}.</p>
             </div>
         </>
     )
 }
 
-export default RecentGameStats;
+export default RandomNotableGameStats;
