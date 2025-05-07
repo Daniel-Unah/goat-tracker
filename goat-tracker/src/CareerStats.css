@@ -5,10 +5,11 @@
     text-align: center;
   }
   
-  .CareerStats h1 {
-    margin-bottom: 20px;
-    color: #333;
-  }
+  h1 {
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
   
   .CareerStats table {
     width: 100%;
@@ -42,4 +43,11 @@
   
   .CareerStats th {
     font-size: 18px;
+  }
+
+  .lebron-pic {
+    display: block;
+    margin: 20px auto; 
+    width: 50%;
+    height: auto;
   }

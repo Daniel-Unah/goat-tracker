@@ -33,27 +33,31 @@ function CareerStats(){
   });
 
   return (
-    <div className="CareerStats">
+    <>
       <h1>LeBron James Career Stats</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Games Played</th>
-            <th>Points</th>
-            <th>Rebounds</th>
-            <th>Assists</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{totalGP}</td>
-            <td>{totalPoints}</td>
-            <td>{totalRebounds}</td>
-            <td>{totalAssists}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      
+      <img src="/lebronPic.jpg" alt="LeBron James" className="lebron-pic" />
+      <div className="CareerStats">
+        <table>
+          <thead>
+            <tr>
+              <th>Games Played</th>
+              <th>Points</th>
+              <th>Rebounds</th>
+              <th>Assists</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{totalGP}</td>
+              <td>{totalPoints}</td>
+              <td>{totalRebounds}</td>
+              <td>{totalAssists}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 
