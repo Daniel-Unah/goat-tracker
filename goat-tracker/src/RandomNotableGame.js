@@ -25,10 +25,12 @@ function RandomNotableGameStats() {
 
     return (
         <>
-            <select value={seasonType} onChange={(e) => setSeasonType(e.target.value)}>
-                <option value="Regular Season">Regular Season</option>
-                <option value="Playoffs">Playoffs</option>
-            </select>
+            <div className="toggle">
+                <select value={seasonType} onChange={(e) => setSeasonType(e.target.value)}>
+                    <option value="Regular Season">Regular Season</option>
+                    <option value="Playoffs">Playoffs</option>
+                </select>
+            </div>
 
             <div className="RandomNotableGameStats">
                 <p>On {randomNotableGameStats.GAME_DATE}, LeBron James scored {randomNotableGameStats.PTS} points, grabbed {randomNotableGameStats.REB} boards, and assisted {randomNotableGameStats.AST} times in {randomNotableGameStats.MIN} minutes in a {randomNotableGameStats.WL} vs {opponent} in the {seasonType}.</p>

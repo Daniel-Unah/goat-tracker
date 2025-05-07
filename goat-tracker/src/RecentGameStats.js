@@ -25,10 +25,12 @@ function RecentGameStats() {
 
     return (
         <>
-            <select value={seasonType} onChange={(e) => setSeasonType(e.target.value)}>
-                <option value="Regular Season">Regular Season</option>
-                <option value="Playoffs">Playoffs</option>
-            </select>
+            <div className="toggle">
+                <select value={seasonType} onChange={(e) => setSeasonType(e.target.value)}>
+                    <option value="Regular Season">Regular Season</option>
+                    <option value="Playoffs">Playoffs</option>
+                </select>
+            </div>
 
             <div className="RecentGameStats">
                 <p>In Lebron James' most recent game, he scored {recentGameStats.PTS} points, grabbed {recentGameStats.REB} boards, and assisted {recentGameStats.AST} times in {recentGameStats.MIN} minutes in a {recentGameStats.WL} vs {opponent} in the {seasonType}.
