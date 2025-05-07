@@ -24,7 +24,7 @@ def get_lebron_career_stats():
 
     return jsonify(stats_df.to_dict(orient='records'))
 # route to lebron's stats his most recent game
-@app.route('/api/lebron/recent-game?season_type=Playoffs', methods=['GET'])
+@app.route('/api/lebron/recent-game', methods=['GET'])
 def get_lebron_game_stats():
     season_type = request.args.get('season_type', default='Regular Season')
     game_stats = playergamelog.PlayerGameLog(player_id=player_id, season='2024-25', season_type_all_star=season_type)
@@ -32,7 +32,7 @@ def get_lebron_game_stats():
 
     return jsonify(stats_df.to_dict(orient='records')[0])
 # route to lebron's stats from a random notable game
-@app.route('/api/lebron/random-gameseason_type=Playoffs', methods=['GET'])
+@app.route('/api/lebron/random-game', methods=['GET'])
 def get_lebron_random_game_stats():
     season_type = request.args.get('season_type', default='Regular Season')
     # Notable games are defined as games where the sum of points, rebounds, and assists is greater than or equal to 50
