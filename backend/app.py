@@ -4,9 +4,16 @@ from nba_api.stats.endpoints import playercareerstats, playergamelog
 from nba_api.stats.static import players
 import pandas as pd
 import time  # Added for delay between API requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
+
+YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
+PLAYLIST_ID = 'PLAGEP4tf7sFs2iHSyLDM1STJ0udqXT8f5'
 
 lebron = [player for player in players.get_players() if player['full_name'] == 'LeBron James'][0]
 player_id = lebron['id']
