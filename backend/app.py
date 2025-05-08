@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template_string
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from nba_api.stats.endpoints import playercareerstats, playergamelog
 from nba_api.stats.static import players
@@ -7,7 +7,6 @@ import time
 from dotenv import load_dotenv
 import os
 import requests
-import random
 import datetime
 
 load_dotenv()
@@ -108,18 +107,8 @@ def get_lebron_random_game_stats():
 @app.route('/api/lebron/random-video', methods=['GET'])
 def get_random_video():
     video_ids = get_video_ids()
-    if not video_ids:
-        return jsonify({"error": "No videos found in playlist."}), 500
     random_video_id = pick_daily_video(video_ids)
-    embed_url = f"https://www.youtube.com/embed/{random_video_id}"
-    html = f"""
-    <h1>LeBron Highlight of the Day</h1>
-    <iframe width="560" height="315"
-            src="{embed_url}"
-            frameborder="0" allowfullscreen>
-    </iframe>
-    """
-    return render_template_string(html)
+    return jsonify({"videoId": random_video_id})
 
 if __name__ == '__main__':
     app.run(debug=True)
