@@ -1,11 +1,14 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template_string
 from flask_cors import CORS
 from nba_api.stats.endpoints import playercareerstats, playergamelog
 from nba_api.stats.static import players
 import pandas as pd
-import time  # Added for delay between API requests
+import time
 from dotenv import load_dotenv
 import os
+import requests
+import random
+import datetime
 
 load_dotenv()
 
@@ -15,10 +18,37 @@ CORS(app)
 YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
 PLAYLIST_ID = 'PLAGEP4tf7sFs2iHSyLDM1STJ0udqXT8f5'
 
+# cache video IDs in memory
+cached_video_ids = None
+
+def get_video_ids():
+    global cached_video_ids
+    if cached_video_ids is not None:
+        return cached_video_ids
+
+    url = 'https://www.googleapis.com/youtube/v3/playlistItems'
+    params = {
+        'part': 'contentDetails',
+        'maxResults': 50,
+        'playlistId': PLAYLIST_ID,
+        'key': YOUTUBE_API_KEY
+    }
+    response = requests.get(url, params=params)
+    data = response.json()
+    
+    if not data.get('items'):
+        return []
+    
+    cached_video_ids = [item['contentDetails']['videoId'] for item in data['items']]
+    return cached_video_ids
+
+def pick_daily_video(video_ids):
+    today = datetime.date.today()
+    index = today.toordinal() % len(video_ids)
+    return video_ids[index]
+
 lebron = [player for player in players.get_players() if player['full_name'] == 'LeBron James'][0]
 player_id = lebron['id']
-
-# Getting the stats for every game LeBron has played in the NBA, so that I can filter for notable games later
 
 # regular season stats
 regular_season_df = pd.DataFrame()
@@ -29,9 +59,7 @@ for year in range(2003, 2024):
     season_stats = playergamelog.PlayerGameLog(player_id=player_id, season=season, season_type_all_star=season_type)
     stats_df = season_stats.get_data_frames()[0]
     regular_season_df = pd.concat([regular_season_df, stats_df], ignore_index=True)
-    time.sleep(0.5)  # Add delay to avoid timeouts or rate limits
-
-# Notable games are defined as games where the sum of points, rebounds, and assists is greater than or equal to 50
+    time.sleep(0.5)
 
 notable_regular_season_games = regular_season_df[regular_season_df['PTS'] + regular_season_df['REB'] + regular_season_df['AST'] >= 50]
 
@@ -44,22 +72,20 @@ for year in range(2003, 2024):
     season_stats = playergamelog.PlayerGameLog(player_id=player_id, season=season, season_type_all_star=season_type)
     stats_df = season_stats.get_data_frames()[0]
     playoffs_df = pd.concat([playoffs_df, stats_df], ignore_index=True)
-    time.sleep(0.5)  # Add delay here too
+    time.sleep(0.5)
 
 notable_playoff_games = playoffs_df[playoffs_df['PTS'] + playoffs_df['REB'] + playoffs_df['AST'] >= 50]
 
 @app.route('/')
 def home():
-    return jsonify({"Info": "Hello! This is the backend to Daniel's Goat Tracker app, a dashboard that displays Lebron James' career stats."})
+    return jsonify({"Info": "Hello! This is the backend to Daniel's Goat Tracker app, a dashboard that displays LeBron James' career stats."})
 
-# route to lebron's career stats, split up by season
 @app.route('/api/lebron/career-stats', methods=['GET'])
 def get_lebron_career_stats():
     career_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
     stats_df = career_stats.get_data_frames()[0]
     return jsonify(stats_df.to_dict(orient='records'))
 
-# route to lebron's stats his most recent game
 @app.route('/api/lebron/recent-game', methods=['GET'])
 def get_lebron_game_stats():
     season_type = request.args.get('season_type', default='Regular Season')
@@ -67,7 +93,6 @@ def get_lebron_game_stats():
     stats_df = game_stats.get_data_frames()[0]
     return jsonify(stats_df.to_dict(orient='records')[0])
 
-# route to lebron's stats from a random notable game
 @app.route('/api/lebron/random-game', methods=['GET'])
 def get_lebron_random_game_stats():
     season_type = request.args.get('season_type', default='Regular Season')
@@ -79,6 +104,22 @@ def get_lebron_random_game_stats():
         return jsonify({"error": "Invalid season type. Please use 'Regular Season' or 'Playoffs'."}), 400
     random_game = notable_games.sample(n=1).iloc[0]
     return jsonify(random_game.to_dict())
+
+@app.route('/api/lebron/random-video', methods=['GET'])
+def get_random_video():
+    video_ids = get_video_ids()
+    if not video_ids:
+        return jsonify({"error": "No videos found in playlist."}), 500
+    random_video_id = pick_daily_video(video_ids)
+    embed_url = f"https://www.youtube.com/embed/{random_video_id}"
+    html = f"""
+    <h1>LeBron Highlight of the Day</h1>
+    <iframe width="560" height="315"
+            src="{embed_url}"
+            frameborder="0" allowfullscreen>
+    </iframe>
+    """
+    return render_template_string(html)
 
 if __name__ == '__main__':
     app.run(debug=True)
