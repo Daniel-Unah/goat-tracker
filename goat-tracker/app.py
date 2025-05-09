@@ -67,11 +67,7 @@ def fetch_notable_games(season_type):
 notable_regular_season_games = fetch_notable_games("Regular Season")
 notable_playoff_games = fetch_notable_games("Playoffs")
 
-# ---- Routes ----
-
-@app.route('/')
-def home():
-    return jsonify({"Info": "Hello! This is the backend to Daniel's Goat Tracker app, a dashboard that displays LeBron James' career stats."})
+# ---- API Routes ----
 
 @app.route('/api/lebron/career-stats', methods=['GET'])
 def get_lebron_career_stats():
@@ -118,6 +114,8 @@ def get_random_video():
         return "<h1>No highlight videos are available right now. Please try again later.</h1>", 503
     return jsonify({"video_id": random_video_id})
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 8080)), debug=True)
+# ---- Local Dev Server (DO NOT RUN ON RENDER) ----
 
+if __name__ == '__main__':
+    if os.getenv('RENDER') is None:
+        app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)), debug=True)
