@@ -119,4 +119,5 @@ def get_random_video():
     return jsonify({"video_id": random_video_id})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)), debug=True)
+
