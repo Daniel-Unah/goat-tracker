@@ -1,10 +1,17 @@
 .highlight-container {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .highlight-container iframe {
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  }
-  
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.highlight-container iframe {
+  width: 100%;
+  height: 450px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
