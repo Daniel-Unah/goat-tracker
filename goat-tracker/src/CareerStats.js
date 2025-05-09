@@ -34,9 +34,9 @@ function CareerStats(){
 
   return (
     <>
-      <h1>LeBron James Career Stats</h1>
-      
+      <h1>Goat Tracker</h1>
       <img src="/lebronPic.jpg" alt="LeBron James" className="lebron-pic" />
+      <h2>Regular Season Career Stats</h2>
       <div className="CareerStats">
         <table>
           <thead>
