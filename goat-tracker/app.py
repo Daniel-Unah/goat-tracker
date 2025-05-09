@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template_string
 from flask_cors import CORS
 from nba_api.stats.endpoints import playercareerstats, playergamelog
 from nba_api.stats.static import players
@@ -7,6 +7,7 @@ import time
 from dotenv import load_dotenv
 import os
 import requests
+import random
 import datetime
 
 load_dotenv()
@@ -17,14 +18,7 @@ CORS(app)
 YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
 PLAYLIST_ID = 'PLAGEP4tf7sFs2iHSyLDM1STJ0udqXT8f5'
 
-# cache video IDs in memory
-cached_video_ids = None
-
 def get_video_ids():
-    global cached_video_ids
-    if cached_video_ids is not None:
-        return cached_video_ids
-
     url = 'https://www.googleapis.com/youtube/v3/playlistItems'
     params = {
         'part': 'contentDetails',
@@ -33,15 +27,15 @@ def get_video_ids():
         'key': YOUTUBE_API_KEY
     }
     response = requests.get(url, params=params)
-    data = response.json()
-    
-    if not data.get('items'):
+    if response.status_code != 200:
+        print("Failed to fetch playlist:", response.text)
         return []
-    
-    cached_video_ids = [item['contentDetails']['videoId'] for item in data['items']]
-    return cached_video_ids
+    data = response.json()
+    return [item['contentDetails']['videoId'] for item in data.get('items', [])]
 
 def pick_daily_video(video_ids):
+    if not video_ids:
+        return None
     today = datetime.date.today()
     index = today.toordinal() % len(video_ids)
     return video_ids[index]
@@ -49,10 +43,9 @@ def pick_daily_video(video_ids):
 lebron = [player for player in players.get_players() if player['full_name'] == 'LeBron James'][0]
 player_id = lebron['id']
 
-# regular season stats
+# Regular season stats
 regular_season_df = pd.DataFrame()
 season_type = 'Regular Season'
-
 for year in range(2003, 2024):
     season = f"{year}-{str(year+1)[-2:]}"
     season_stats = playergamelog.PlayerGameLog(player_id=player_id, season=season, season_type_all_star=season_type)
@@ -62,10 +55,9 @@ for year in range(2003, 2024):
 
 notable_regular_season_games = regular_season_df[regular_season_df['PTS'] + regular_season_df['REB'] + regular_season_df['AST'] >= 50]
 
-# playoffs stats
+# Playoffs stats
 playoffs_df = pd.DataFrame()
 season_type = 'Playoffs'
-
 for year in range(2003, 2024):
     season = f"{year}-{str(year+1)[-2:]}"
     season_stats = playergamelog.PlayerGameLog(player_id=player_id, season=season, season_type_all_star=season_type)
@@ -108,7 +100,19 @@ def get_lebron_random_game_stats():
 def get_random_video():
     video_ids = get_video_ids()
     random_video_id = pick_daily_video(video_ids)
-    return jsonify({"videoId": random_video_id})
+
+    if not random_video_id:
+        return "<h1>No highlight videos are available right now. Please try again later.</h1>", 503
+
+    embed_url = f"https://www.youtube.com/embed/{random_video_id}"
+    html = f"""
+    <h1>LeBron Highlight of the Day</h1>
+    <iframe width="560" height="315"
+            src="{embed_url}"
+            frameborder="0" allowfullscreen>
+    </iframe>
+    """
+    return render_template_string(html)
 
 if __name__ == '__main__':
     app.run(debug=True)
