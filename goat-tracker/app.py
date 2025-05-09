@@ -114,8 +114,7 @@ def get_random_video():
         return "<h1>No highlight videos are available right now. Please try again later.</h1>", 503
     return jsonify({"video_id": random_video_id})
 
-# ---- Local Dev Server (DO NOT RUN ON RENDER) ----
+port = int(os.getenv('PORT', 5000))
 
 if __name__ == '__main__':
-    if os.getenv('RENDER') is None:
-        app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)), debug=True)
+    app.run(debug=True, host='0.0.0.0', port=port)
