@@ -104,15 +104,9 @@ def get_random_video():
     if not random_video_id:
         return "<h1>No highlight videos are available right now. Please try again later.</h1>", 503
 
-    embed_url = f"https://www.youtube.com/embed/{random_video_id}"
-    html = f"""
-    <h1>LeBron Highlight of the Day</h1>
-    <iframe width="560" height="315"
-            src="{embed_url}"
-            frameborder="0" allowfullscreen>
-    </iframe>
-    """
-    return render_template_string(html)
+    return jsonify({
+        "video_id": random_video_id,
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)

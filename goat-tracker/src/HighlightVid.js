@@ -10,7 +10,7 @@ function HighlightVid() {
       try {
         const response = await fetch(VIDEO_PATH);
         const data = await response.json();
-        setVideoId(data.videoId);
+        setVideoId(data.video_id);
       } catch (error) {
         console.error('Error fetching video:', error);
       }
