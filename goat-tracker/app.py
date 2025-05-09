@@ -26,7 +26,7 @@ def get_video_ids():
         'playlistId': PLAYLIST_ID,
         'key': YOUTUBE_API_KEY
     }
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params, timeout = 5)
     if response.status_code != 200:
         print("Failed to fetch playlist:", response.text)
         return []
