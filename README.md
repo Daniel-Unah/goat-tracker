@@ -6,7 +6,7 @@ A full-stack web app that lets you explore the stats of LeBron James, the GOAT â
 
 - **Frontend:** React.js (with standard CSS)
 - **Backend:** Flask (Python)
-- **Deployment:** Render (frontend and backend deployed separately)
+- **Deployment:** Railway (frontend and backend deployed separately)
 - **Data Source:** [nba_api](https://github.com/swar/nba_api) and Youtube API
 
 ## ðŸš€ Features
