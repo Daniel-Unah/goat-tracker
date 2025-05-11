@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "./HighlightVid.css";
 
 function HighlightVid() {
-  const VIDEO_PATH = 'http://127.0.0.1:5000/api/lebron/random-video';
+  const VIDEO_PATH = 'https://goat-tracker-backend-production.up.railway.app/api/lebron/random-video';
   const [videoId, setVideoId] = useState('');
 
   useEffect(() => {

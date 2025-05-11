@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "./CareerStats.css";
 
 function CareerStats(){
-  const PATHWAY = 'http://127.0.0.1:5000/api/lebron/career-stats'
+  const PATHWAY = 'https://goat-tracker-backend-production.up.railway.app/api/lebron/career-stats'
   const [careerStats, setcareerStats] = useState([]);
 
   useEffect(() => {

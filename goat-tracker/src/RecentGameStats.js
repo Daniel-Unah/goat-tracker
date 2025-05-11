@@ -6,7 +6,7 @@ function RecentGameStats() {
     const [seasonType, setSeasonType] = useState("Regular Season");
 
     useEffect(() => {
-        const PATHWAY = `http://127.0.0.1:5000/api/lebron/recent-game?season_type=${seasonType}`;
+        const PATHWAY = `https://goat-tracker-backend-production.up.railway.app/api/lebron/recent-game?season_type=${seasonType}`;
         const fetchData = async () => {
             try {
                 const response = await fetch(PATHWAY);
