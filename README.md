@@ -11,7 +11,7 @@ A full-stack web app that lets you explore the stats of LeBron James, the GOAT â
 
 ## ðŸš€ Features
 
-- See career stats and recent game logs
-- View a random, notable throwback game from his career
+- See LeBron's career stats and recent game logs
+- View a random, notable throwback game from his career. Updates everytime you select Playoffs or Regular Season in the toggle dropdown.
 - Everyday, a new LeBron vid is displayed on the page
 - Clean, simple, responsive layout
